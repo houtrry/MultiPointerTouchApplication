@@ -51,6 +51,10 @@ class MultiPointerTouchView : View {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
+        //一系列事件（down->up）中，pointId是不会变化的，但是actionIndex是有可能发生变化的
+        //在这一系列事件中，如果有其他点控的down/up事件，actionIndex都会重新计算生成（也就是发生了变化）
+        //getX/getY的参数都是actionIndex，但是actionIndex会变，
+        // 所以，需要根据pointId去获取actionIndex（通过android.view.MotionEvent.findPointerIndex）
         event?.let {
             when (it.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
